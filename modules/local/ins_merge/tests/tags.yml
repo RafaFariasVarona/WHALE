@@ -1,0 +1,2 @@
+insmerge:
+  - "modules/nf-core/insmerge/**"

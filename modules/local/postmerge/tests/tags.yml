@@ -1,0 +1,2 @@
+postmerge:
+  - "modules/nf-core/postmerge/**"

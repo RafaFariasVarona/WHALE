@@ -40,6 +40,86 @@
                     "type": "string",
                     "description": "MultiQC report title. Printed as page header, used for filename if not otherwise specified.",
                     "fa_icon": "fas fa-file-signature"
+                },
+                "step": {
+                    "type": "string",
+                    "description": "Starting step: 'mapping', 'variant_calling', 'snv_annotation' or 'sv_annotation'"
+                }
+            }
+        },
+        "variant_calling": {
+            "title": "Variant calling",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "snv_calling": {
+                    "type": "boolean",
+                    "description": "Run or skip Single Nucleotide Variant calling"
+                },
+                "snv_caller": {
+                    "type": "string",
+                    "description": "Deepvariant, NanoCaller and/or Clair3"
+                },
+                "sv_calling": {
+                    "type": "boolean",
+                    "description": "Run or skip Structural Variant calling"
+                },
+                "sv_caller": {
+                    "type": "string",
+                    "description": "Sniffles, CuteSV and/or SVIM"
+                },
+                "merge_snv": {
+                    "type": "boolean",
+                    "description": "Merge vcfs of SNV calling into a single file"
+                },
+                "merge_sv": {
+                    "type": "boolean",
+                    "description": "Merge vcfs of SV calling into a single file"
+                },
+                "sv_database": {
+                    "type": "boolean",
+                    "description": "Use the internal SV database info"
+                },
+                "sv_multiinter": {
+                    "type": "string",
+                    "description": "Path to the bedtools multiinter output"
+                }
+            }
+        },
+        "annotation_of_snvs_and_svs": {
+            "title": "Annotation of SNVs and SVs",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "snv_annotation": {
+                    "type": "boolean",
+                    "description": "Annotation of SNVs"
+                },
+                "sv_annotation": {
+                    "type": "boolean",
+                    "description": "Annotation of SVs"
+                },
+                "annotsv_annotations": {
+                    "type": "string",
+                    "description": "Install the AnnotSV annotations or give the path to the directory containing the annotations"
+                },
+                "gene_transcripts": {
+                    "type": "string",
+                    "description": "Path to the canonical transcripts list"
+                }
+            }
+        },
+        "singularity_images": {
+            "title": "Singularity images",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "singularity_dir": {
+                    "type": "string",
+                    "description": "Path to singularity images"
                 }
             }
         },
@@ -55,6 +135,14 @@
                     "fa_icon": "fas fa-book",
                     "help_text": "If using a reference genome configured in the pipeline using iGenomes, use this parameter to give the ID for the reference. This is then used to build the full paths for all required reference genome files e.g. `--genome GRCh38`. \n\nSee the [nf-core website docs](https://nf-co.re/usage/reference_genomes) for more details."
                 },
+                "igenomes_ignore": {
+                    "type": "boolean",
+                    "description": "Do not load the iGenomes reference config.",
+                    "fa_icon": "fas fa-ban",
+                    "hidden": true,
+                    "help_text": "Do not load `igenomes.config` when running the pipeline. You may choose this option if you observe clashes between custom parameters and those supplied in `igenomes.config`.",
+                    "default": true
+                },
                 "fasta": {
                     "type": "string",
                     "format": "file-path",
@@ -65,12 +153,17 @@
                     "help_text": "This parameter is *mandatory* if `--genome` is not specified. If you don't have a BWA index available this will be generated for you automatically. Combine with `--save_reference` to save BWA index for future runs.",
                     "fa_icon": "far fa-file-code"
                 },
-                "igenomes_ignore": {
-                    "type": "boolean",
-                    "description": "Do not load the iGenomes reference config.",
-                    "fa_icon": "fas fa-ban",
-                    "hidden": true,
-                    "help_text": "Do not load `igenomes.config` when running the pipeline. You may choose this option if you observe clashes between custom parameters and those supplied in `igenomes.config`."
+                "fasta_fai": {
+                    "type": "string",
+                    "description": "Path to FASTA FAI file."
+                },
+                "fasta_gzi": {
+                    "type": "string",
+                    "description": "Path to FASTA GZI file."
+                },
+                "assembly": {
+                    "type": "string",
+                    "description": "Genome assembly."
                 }
             }
         },
@@ -279,6 +372,15 @@
     "allOf": [
         {
             "$ref": "#/definitions/input_output_options"
+        },
+        {
+            "$ref": "#/definitions/variant_calling"
+        },
+        {
+            "$ref": "#/definitions/annotation_of_snvs_and_svs"
+        },
+        {
+            "$ref": "#/definitions/singularity_images"
         },
         {
             "$ref": "#/definitions/reference_genome_options"

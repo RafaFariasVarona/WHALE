@@ -1,0 +1,2 @@
+vcfheader:
+  - "modules/nf-core/vcfheader/**"

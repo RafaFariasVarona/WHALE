@@ -1,0 +1,2 @@
+addsamplesdb:
+  - "modules/nf-core/addsamplesdb/**"

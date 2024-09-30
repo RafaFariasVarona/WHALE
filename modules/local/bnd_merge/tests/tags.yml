@@ -1,0 +1,2 @@
+bndmerge:
+  - "modules/nf-core/bndmerge/**"

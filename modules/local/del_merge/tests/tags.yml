@@ -1,0 +1,2 @@
+delmerge:
+  - "modules/nf-core/delmerge/**"

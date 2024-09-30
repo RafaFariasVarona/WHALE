@@ -32,7 +32,17 @@ include { getGenomeAttribute      } from './subworkflows/local/utils_nfcore_vari
 // TODO nf-core: Remove this line if you don't need a FASTA file
 //   This is an example of how to use getGenomeAttribute() to fetch parameters
 //   from igenomes.config using `--genome`
-params.fasta = getGenomeAttribute('fasta')
+// params.fasta = getGenomeAttribute('fasta')
+// params.fasta_fai = getGenomeAttribute('fasta_fai')
+
+// Initialize fasta file with meta map: from sarek/main.nf
+fasta = params.fasta ? Channel.fromPath(params.fasta).map{ it -> [ [id:it.baseName], it ] }.collect() : Channel.empty()
+
+// Initialize fasta_fai file with meta map:
+fasta_fai = params.fasta_fai ? Channel.fromPath(params.fasta_fai).map{ it -> [ [id:it.baseName], it ] }.collect() : Channel.empty()
+
+// Initialize fasta_gzi file with meta map:
+fasta_gzi = params.fasta_gzi ? Channel.fromPath(params.fasta_gzi).map{ it -> [ [id:it.baseName], it ] }.collect() : Channel.empty()
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -47,14 +57,20 @@ workflow NFCORE_VARIANTPIPELINE {
 
     take:
     samplesheet // channel: samplesheet read in from --input
-
+    fasta
+    fasta_fai
+    fasta_gzi
+    
     main:
 
     //
     // WORKFLOW: Run pipeline
     //
     VARIANTPIPELINE (
-        samplesheet
+        samplesheet,
+        fasta,
+        fasta_fai,
+        fasta_gzi
     )
 
     emit:
@@ -88,7 +104,10 @@ workflow {
     // WORKFLOW: Run main workflow
     //
     NFCORE_VARIANTPIPELINE (
-        PIPELINE_INITIALISATION.out.samplesheet
+        PIPELINE_INITIALISATION.out.samplesheet,
+        fasta,
+        fasta_fai,
+        fasta_gzi
     )
 
     //

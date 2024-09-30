@@ -1,0 +1,2 @@
+premerge:
+  - "modules/nf-core/premerge/**"

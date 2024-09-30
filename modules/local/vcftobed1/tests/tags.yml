@@ -1,0 +1,2 @@
+vcftobed:
+  - "modules/nf-core/vcftobed/**"

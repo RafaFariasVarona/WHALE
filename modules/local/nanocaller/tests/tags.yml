@@ -1,0 +1,2 @@
+nanocaller:
+  - "modules/nf-core/nanocaller/**"
