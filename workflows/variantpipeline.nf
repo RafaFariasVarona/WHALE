@@ -124,7 +124,8 @@ workflow VARIANTPIPELINE {
     
     if (params.snv_annotation == true) {
         SNV_ANNOTATION (
-            merged_vcf
+            merged_vcf, 
+            fasta
         )
     }
 

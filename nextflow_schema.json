@@ -394,5 +394,25 @@
         {
             "$ref": "#/definitions/generic_options"
         }
-    ]
+    ],
+    "properties": {
+        "vep_cache_version": {
+            "type": "integer",
+            "default": 112
+        },
+        "vep_species": {
+            "type": "string",
+            "default": "homo_sapiens_refseq"
+        },
+        "vep_genome": {
+            "type": "string",
+            "default": "hg38"
+        },
+        "vep_cache": {
+            "type": "string"
+        },
+        "extra_files": {
+            "type": "string"
+        }
+    }
 }
