@@ -44,6 +44,79 @@ fasta_fai = params.fasta_fai ? Channel.fromPath(params.fasta_fai).map{ it -> [ [
 // Initialize fasta_gzi file with meta map:
 fasta_gzi = params.fasta_gzi ? Channel.fromPath(params.fasta_gzi).map{ it -> [ [id:it.baseName], it ] }.collect() : Channel.empty()
 
+// Initialize vep_extra_files
+
+// vep plugins
+vep_pluggin_files = []
+
+vep_pluggin_files.add(file("${params.vep_annotation_dir}/${params.dbscSNV}", checkIfExists: true))
+vep_pluggin_files.add(file("${params.vep_annotation_dir}/${params.dbscSNV_tbi}", checkIfExists: true))
+
+vep_pluggin_files.add(file("${params.vep_annotation_dir}/${params.dbNSFP}", checkIfExists: true))
+vep_pluggin_files.add(file("${params.vep_annotation_dir}/${params.dbNSFP_tbi}", checkIfExists: true))
+
+vep_pluggin_files.add(file("${params.vep_annotation_gene_dir}/${params.loFtool}", checkIfExists: true))
+vep_pluggin_files.add(file("${params.vep_annotation_gene_dir}/${params.exACpLI}", checkIfExists: true))
+
+vep_pluggin_files.add(file("${params.vep_annotation_gene_dir}/${params.maxEntScan}", checkIfExists: true))
+
+vep_pluggin_files.add(file("${params.vep_annotation_dir}/${params.cADD_INDELS}", checkIfExists: true))
+vep_pluggin_files.add(file("${params.vep_annotation_dir}/${params.cADD_INDELS_tbi}", checkIfExists: true))
+
+vep_pluggin_files.add(file("${params.vep_annotation_dir}/${params.cADD_SNVS}", checkIfExists: true))
+vep_pluggin_files.add(file("${params.vep_annotation_dir}/${params.cADD_SNVS_tbi}", checkIfExists: true))
+
+vep_pluggin_files_all = vep_pluggin_files ? Channel.fromPath(vep_pluggin_files).collect() : Channel.empty()
+//vep_pluggin_files_all.view()
+
+// vep custom
+
+vep_custom_files = []
+
+vep_custom_files.add(file("${params.vep_annotation_dir}/${params.kaviar}", checkIfExists: true))
+vep_custom_files.add(file("${params.vep_annotation_dir}/${params.kaviar_tbi}", checkIfExists: true))
+
+vep_custom_files.add(file("${params.vep_annotation_dir}/${params.mAF_FJD_COHORT}", checkIfExists: true))
+vep_custom_files.add(file("${params.vep_annotation_dir}/${params.mAF_FJD_COHORT_tbi}", checkIfExists: true))
+
+vep_custom_files.add(file("${params.vep_annotation_dir}/${params.cCRS_DB}", checkIfExists: true))
+vep_custom_files.add(file("${params.vep_annotation_dir}/${params.cCRS_DB_tbi}", checkIfExists: true))
+
+vep_custom_files.add(file("${params.vep_annotation_dir}/${params.cLINVAR}", checkIfExists: true))
+vep_custom_files.add(file("${params.vep_annotation_dir}/${params.cLINVAR_tbi}", checkIfExists: true))
+
+vep_custom_files.add(file("${params.vep_annotation_dir}/${params.dENOVO_DB}", checkIfExists: true))
+vep_custom_files.add(file("${params.vep_annotation_dir}/${params.dENOVO_DB_tbi}", checkIfExists: true))
+
+vep_custom_files.add(file("${params.vep_annotation_dir}/${params.gNOMADe_cov}", checkIfExists: true))
+vep_custom_files.add(file("${params.vep_annotation_dir}/${params.gNOMADe_cov_tbi}", checkIfExists: true))
+vep_custom_files.add(file("${params.vep_annotation_dir}/${params.gNOMADe}", checkIfExists: true))
+vep_custom_files.add(file("${params.vep_annotation_dir}/${params.gNOMADe_tbi}", checkIfExists: true))
+vep_custom_files.add(file("${params.vep_annotation_dir}/${params.gNOMADg_cov}", checkIfExists: true))
+vep_custom_files.add(file("${params.vep_annotation_dir}/${params.gNOMADg_cov_tbi}", checkIfExists: true))
+vep_custom_files.add(file("${params.vep_annotation_dir}/${params.gNOMADg}", checkIfExists: true))
+vep_custom_files.add(file("${params.vep_annotation_dir}/${params.gNOMADg_tbi}", checkIfExists: true))
+
+vep_custom_files.add(file("${params.vep_annotation_dir}/${params.mutScore}", checkIfExists: true))
+vep_custom_files.add(file("${params.vep_annotation_dir}/${params.mutScore_tbi}", checkIfExists: true))
+
+vep_custom_files.add(file("${params.vep_annotation_dir}/${params.spliceAI_SNV}", checkIfExists: true))
+vep_custom_files.add(file("${params.vep_annotation_dir}/${params.spliceAI_SNV_tbi}", checkIfExists: true))
+
+vep_custom_files.add(file("${params.vep_annotation_dir}/${params.spliceAI_INDEL}", checkIfExists: true))
+vep_custom_files.add(file("${params.vep_annotation_dir}/${params.spliceAI_INDEL_tbi}", checkIfExists: true))
+
+vep_custom_files.add(file("${params.vep_annotation_dir}/${params.REVEL}", checkIfExists: true))
+vep_custom_files.add(file("${params.vep_annotation_dir}/${params.REVEL_tbi}", checkIfExists: true))
+
+vep_custom_files.add(file("${params.vep_annotation_dir}/${params.CSVS_dir}/${params.cSVS}", checkIfExists: true))
+vep_custom_files.add(file("${params.vep_annotation_dir}/${params.CSVS_dir}/${params.cSVS_tbi}", checkIfExists: true))
+
+vep_custom_files_all = vep_custom_files ? Channel.fromPath(vep_custom_files).collect() : Channel.empty()
+//vep_custom_files_all.view()
+
+
+
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     NAMED WORKFLOWS FOR PIPELINE
@@ -60,6 +133,8 @@ workflow NFCORE_VARIANTPIPELINE {
     fasta
     fasta_fai
     fasta_gzi
+    vep_pluggin_files_all
+    vep_custom_files_all
     
     main:
 
@@ -70,7 +145,9 @@ workflow NFCORE_VARIANTPIPELINE {
         samplesheet,
         fasta,
         fasta_fai,
-        fasta_gzi
+        fasta_gzi,
+        vep_pluggin_files_all,
+        vep_custom_files_all
     )
 
     emit:
@@ -107,7 +184,9 @@ workflow {
         PIPELINE_INITIALISATION.out.samplesheet,
         fasta,
         fasta_fai,
-        fasta_gzi
+        fasta_gzi,
+        vep_pluggin_files_all,
+        vep_custom_files_all
     )
 
     //

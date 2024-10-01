@@ -9,6 +9,8 @@ workflow SNV_ANNOTATION {
     take:
     merged_vcf
     fasta
+    vep_pluggin_files_all
+    vep_custom_files_all
 
     main:
     FORMAT2INFO (
@@ -34,15 +36,18 @@ workflow SNV_ANNOTATION {
 
     AUTOMAP.out.roh_automap.view()
 
+    vcf_vep = FORMAT2INFO.out.vcf_to_annotate.combine(vep_custom_files_all.toList()).view()//.view() // [[[meta], vcf],[custom_file1, custom_file2,...]]
+
     ENSEMBLVEP_VEP (
 
-        FORMAT2INFO.out.vcf_to_annotate,
+        //FORMAT2INFO.out.vcf_to_annotate,
+        vcf_vep,
         params.vep_genome, 
         params.vep_species, 
         params.vep_cache_version, 
         params.vep_cache, 
-        fasta
-        //params.vep_extra_files
+        fasta,
+        vep_pluggin_files_all
     )
 
 

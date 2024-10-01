@@ -8,13 +8,13 @@ process ENSEMBLVEP_VEP {
         'biocontainers/ensembl-vep:112.0--pl5321h2a3209d_0' }"
 
     input:
-    tuple val(meta), path(vcf)//, path(custom_extra_files)
+    tuple val(meta), path(vcf), path(custom_extra_files)
     val   genome
     val   species
     val   cache_version
     path  cache
     tuple val(meta2), path(fasta)
-    //path  extra_files
+    path  extra_files
 
     output:
     tuple val(meta), path("*.vcf.gz")  , optional:true, emit: vcf
