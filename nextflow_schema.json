@@ -576,6 +576,10 @@
         "CSVS_dir": {
             "type": "string",
             "default": "CSVS_vcf_hg38"
+        },
+        "n_vcf_variants_split": {
+            "type": "integer",
+            "default": 1200000
         }
     }
 }

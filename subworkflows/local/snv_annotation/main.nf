@@ -3,6 +3,7 @@ include { TABIX_TABIX            } from '../../../modules/nf-core/tabix/tabix/ma
 include { TABIX_BGZIP            } from '../../../modules/nf-core/tabix/bgzip/main'
 include { AUTOMAP                } from '../../../modules/local/automap/main'
 include { ENSEMBLVEP_VEP         } from '../../../modules/nf-core/ensemblvep/vep/main'
+include { SPLITVCFPVM            } from '../../../modules/local/splitvcfpvm/main'
 
 workflow SNV_ANNOTATION {
 
@@ -17,8 +18,17 @@ workflow SNV_ANNOTATION {
         merged_vcf
     )
 
+    SPLITVCFPVM (
+        merged_vcf,
+        //FORMAT2INFO.out.vcf_to_annotate,
+        params.n_vcf_variants_split
+    )
+
+    //SPLITVCFPVM.out.vcfs.transpose().view()
+
     TABIX_BGZIP (
-        FORMAT2INFO.out.vcf_to_annotate
+        //FORMAT2INFO.out.vcf_to_annotate
+        SPLITVCFPVM.out.vcfs.transpose()
     )
     
     TABIX_TABIX (
@@ -34,9 +44,10 @@ workflow SNV_ANNOTATION {
 		projectDir
     )
 
-    AUTOMAP.out.roh_automap.view()
+    //AUTOMAP.out.roh_automap.view()
 
-    vcf_vep = FORMAT2INFO.out.vcf_to_annotate.combine(vep_custom_files_all.toList()).view()//.view() // [[[meta], vcf],[custom_file1, custom_file2,...]]
+    //vcf_vep = FORMAT2INFO.out.vcf_to_annotate.combine(vep_custom_files_all.toList())//.view() // [[[meta], vcf],[custom_file1, custom_file2,...]]
+    vcf_vep = SPLITVCFPVM.out.vcfs.transpose().combine(vep_custom_files_all.toList())//.view() // [[[meta], vcf],[custom_file1, custom_file2,...]]
 
     ENSEMBLVEP_VEP (
 
