@@ -580,6 +580,38 @@
         "n_vcf_variants_split": {
             "type": "integer",
             "default": 1200000
+        },
+        "dbNSFP_gene": {
+            "type": "string",
+            "default": "dbNSFP4.9_gene.complete.pvm.txt"
+        },
+        "omim": {
+            "type": "string",
+            "default": "omim_genemap2.txt"
+        },
+        "regiondict": {
+            "type": "string",
+            "default": "dict_region.csv"
+        },
+        "domino": {
+            "type": "string",
+            "default": "domino_v1_20190219.txt"
+        },
+        "tissue_expression": {
+            "type": "string",
+            "default": "rna_tissue_consensus_pvm.tsv"
+        },
+        "maf": {
+            "type": "number",
+            "default": 0.1
+        },
+        "glowgenes": {
+            "type": "string",
+            "default": "[]"
+        },
+        "genefilter": {
+            "type": "string",
+            "default": "[]"
         }
     }
 }

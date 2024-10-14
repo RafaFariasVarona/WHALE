@@ -31,8 +31,6 @@ workflow VARIANTPIPELINE {
     fasta
     fasta_fai
     fasta_gzi
-    vep_pluggin_files_all
-    vep_custom_files_all
 
     main:
 
@@ -128,9 +126,7 @@ workflow VARIANTPIPELINE {
     if (params.snv_annotation == true) {
         SNV_ANNOTATION (
             merged_vcf, 
-            fasta,
-            vep_pluggin_files_all,
-            vep_custom_files_all
+            fasta
         )
     }
 

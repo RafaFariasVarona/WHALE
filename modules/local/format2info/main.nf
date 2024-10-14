@@ -23,7 +23,7 @@ process FORMAT2INFO {
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    FORMAT=(GT AD DP VAF SF GD DV_GT DV_DP DV_VD C3_GT C3_DP C3_VD NC_GT NC_DP NC_VD)
+    FORMAT=\$(awk '/^#[^#]/{getline; gsub(":", " ", \$9); print \$9}' ${final_vcf})
 
 	bcftools view -h ${final_vcf} | grep "##" > ${prefix}.vcf_to_annotate.vcf
 	echo "##INFO=<ID=variant_id,Number=.,Type=String,Description=\\"variant identification\\">" >> ${prefix}.vcf_to_annotate.vcf
