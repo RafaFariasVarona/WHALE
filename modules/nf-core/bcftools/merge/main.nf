@@ -36,7 +36,7 @@ process BCFTOOLS_MERGE {
         $args \\
         $regions \\
         --threads $task.cpus \\
-        --output ${prefix}_merged_snvs.${extension} \\
+        --output ${prefix}.${extension} \\
         $vcfs
 
     cat <<-END_VERSIONS > versions.yml
