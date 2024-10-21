@@ -123,8 +123,6 @@ workflow SNV_ANNOTATION {
         fasta,
         vep_pluggin_files_all
     )
-
-    ENSEMBLVEP_VEP.out.tsv.groupTuple().view()
     
     dbNSFP_gene_path = "${params.vep_annotation_gene_dir}/${params.dbNSFP_gene}"
     dbNSFP_gene = dbNSFP_gene_path ? Channel.fromPath(dbNSFP_gene_path).collect() : Channel.empty()
@@ -156,12 +154,8 @@ workflow SNV_ANNOTATION {
         projectDir
     )
 
-    POSTVEP.out.pvm_tsv.view()
-
     MERGETSV (
         POSTVEP.out.pvm_tsv,
         params.assembly
     )
-
-    MERGETSV.out.final_tsv.view()
 }
