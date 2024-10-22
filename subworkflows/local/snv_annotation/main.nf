@@ -31,7 +31,7 @@ workflow SNV_ANNOTATION {
         TABIX_BGZIP.out.output
     )
 
-    sample_info = TABIX_BGZIP.out.output.join(TABIX_TABIX.out.tbi).join(FORMAT2INFO.out.fields)
+    sample_info = TABIX_BGZIP.out.output.concat(TABIX_TABIX.out.tbi, FORMAT2INFO.out.fields).groupTuple()
 
     AUTOMAP (
         merged_vcf,
@@ -42,26 +42,26 @@ workflow SNV_ANNOTATION {
     // Initialize vep_extra_files
 
     // vep plugins
-    vep_pluggin_files = []
+    vep_plugin_files = []
 
-    vep_pluggin_files.add(file("${params.vep_annotation_dir}/${params.dbscSNV}", checkIfExists: true))
-    vep_pluggin_files.add(file("${params.vep_annotation_dir}/${params.dbscSNV_tbi}", checkIfExists: true))
+    vep_plugin_files.add(file("${params.vep_annotation_dir}/${params.dbscSNV}", checkIfExists: true))
+    vep_plugin_files.add(file("${params.vep_annotation_dir}/${params.dbscSNV_tbi}", checkIfExists: true))
 
-    vep_pluggin_files.add(file("${params.vep_annotation_dir}/${params.dbNSFP}", checkIfExists: true))
-    vep_pluggin_files.add(file("${params.vep_annotation_dir}/${params.dbNSFP_tbi}", checkIfExists: true))
+    vep_plugin_files.add(file("${params.vep_annotation_dir}/${params.dbNSFP}", checkIfExists: true))
+    vep_plugin_files.add(file("${params.vep_annotation_dir}/${params.dbNSFP_tbi}", checkIfExists: true))
 
-    vep_pluggin_files.add(file("${params.vep_annotation_gene_dir}/${params.loFtool}", checkIfExists: true))
-    vep_pluggin_files.add(file("${params.vep_annotation_gene_dir}/${params.exACpLI}", checkIfExists: true))
+    vep_plugin_files.add(file("${params.vep_annotation_gene_dir}/${params.loFtool}", checkIfExists: true))
+    vep_plugin_files.add(file("${params.vep_annotation_gene_dir}/${params.exACpLI}", checkIfExists: true))
 
-    vep_pluggin_files.add(file("${params.vep_annotation_gene_dir}/${params.maxEntScan}", checkIfExists: true))
+    vep_plugin_files.add(file("${params.vep_annotation_gene_dir}/${params.maxEntScan}", checkIfExists: true))
 
-    vep_pluggin_files.add(file("${params.vep_annotation_dir}/${params.cADD_INDELS}", checkIfExists: true))
-    vep_pluggin_files.add(file("${params.vep_annotation_dir}/${params.cADD_INDELS_tbi}", checkIfExists: true))
+    vep_plugin_files.add(file("${params.vep_annotation_dir}/${params.cADD_INDELS}", checkIfExists: true))
+    vep_plugin_files.add(file("${params.vep_annotation_dir}/${params.cADD_INDELS_tbi}", checkIfExists: true))
 
-    vep_pluggin_files.add(file("${params.vep_annotation_dir}/${params.cADD_SNVS}", checkIfExists: true))
-    vep_pluggin_files.add(file("${params.vep_annotation_dir}/${params.cADD_SNVS_tbi}", checkIfExists: true))
+    vep_plugin_files.add(file("${params.vep_annotation_dir}/${params.cADD_SNVS}", checkIfExists: true))
+    vep_plugin_files.add(file("${params.vep_annotation_dir}/${params.cADD_SNVS_tbi}", checkIfExists: true))
 
-    vep_pluggin_files_all = vep_pluggin_files ? Channel.fromPath(vep_pluggin_files).collect() : Channel.empty()
+    vep_plugin_files_all = vep_plugin_files ? Channel.fromPath(vep_plugin_files).collect() : Channel.empty()
 
     // vep custom
 
@@ -108,11 +108,7 @@ workflow SNV_ANNOTATION {
 
     vep_custom_files_all = vep_custom_files ? Channel.fromPath(vep_custom_files).collect() : Channel.empty()
 
-    format2info_files = sample_info.map { meta, vcf, tbi, fields -> [vcf, tbi, fields] }
-
-    vep_custom_files_all = vep_custom_files_all.combine(format2info_files)
-
-    vcf_vep = SPLITVCFPVM.out.vcfs.transpose().combine(vep_custom_files_all.toList()) // [[meta], vcf], split, [custom_file1, custom_file2,...]]
+    vcf_vep = SPLITVCFPVM.out.vcfs.transpose().combine(sample_info, by: 0).combine(vep_custom_files_all.toList()) // [[meta, vcf], split, [format2info_files], [custom_files]]
 
     ENSEMBLVEP_VEP (
         vcf_vep,
@@ -121,7 +117,7 @@ workflow SNV_ANNOTATION {
         params.vep_cache_version, 
         params.vep_cache, 
         fasta,
-        vep_pluggin_files_all
+        vep_plugin_files_all
     )
     
     dbNSFP_gene_path = "${params.vep_annotation_gene_dir}/${params.dbNSFP_gene}"
