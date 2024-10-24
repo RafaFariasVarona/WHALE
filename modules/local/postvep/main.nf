@@ -3,8 +3,7 @@ process POSTVEP {
     label 'process_medium'
 
     input:
-    tuple val(meta), path(vep_tsv)
-    tuple val(meta), path(roh_automap)
+    tuple val(meta), path(vep_tsv), path(roh_automap)
     path dbNSFP_gene
     path omim
     path regiondict

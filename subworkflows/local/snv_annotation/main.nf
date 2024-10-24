@@ -135,9 +135,10 @@ workflow SNV_ANNOTATION {
     tissue_expression_path = "${params.vep_annotation_gene_dir}/${params.tissue_expression}"
     tissue_expression = tissue_expression_path ? Channel.fromPath(tissue_expression_path).collect() : Channel.empty()
     
+    postvep_input = ENSEMBLVEP_VEP.out.tsv.groupTuple().join(AUTOMAP.out.roh_automap)
+
     POSTVEP (
-        ENSEMBLVEP_VEP.out.tsv.groupTuple(),
-        AUTOMAP.out.roh_automap,
+        postvep_input,
         dbNSFP_gene,
         omim,
         regiondict,
