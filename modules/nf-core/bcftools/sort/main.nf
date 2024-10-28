@@ -31,7 +31,7 @@ process BCFTOOLS_SORT {
     """
     bcftools \\
         sort \\
-        --output ${vcf.getBaseName(2)}_sorted.${extension} \\
+        --output ${prefix}.${extension} \\
         --temp-dir . \\
         $args \\
         $vcf

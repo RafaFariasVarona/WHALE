@@ -35,7 +35,7 @@ process BCFTOOLS_VIEW {
                     "vcf.gz"
     """
     bcftools view \\
-        --output ${vcf.getBaseName(2)}_minac.${extension} \\
+        --output ${prefix}.${extension} \\
         ${regions_file} \\
         ${targets_file} \\
         ${samples_file} \\

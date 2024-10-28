@@ -394,5 +394,224 @@
         {
             "$ref": "#/definitions/generic_options"
         }
-    ]
+    ],
+    "properties": {
+        "vep_cache_version": {
+            "type": "integer",
+            "default": 112
+        },
+        "vep_species": {
+            "type": "string",
+            "default": "homo_sapiens"
+        },
+        "vep_genome": {
+            "type": "string",
+            "default": "GRCh38"
+        },
+        "vep_cache": {
+            "type": "string"
+        },
+        "dbscSNV": {
+            "type": "string",
+            "default": "dbscSNV1.1_GRCh38.txt.gz"
+        },
+        "dbscSNV_tbi": {
+            "type": "string",
+            "default": "dbscSNV1.1_GRCh38.txt.gz.tbi"
+        },
+        "loFtool": {
+            "type": "string",
+            "default": "LoFtool_scores.txt"
+        },
+        "exACpLI": {
+            "type": "string",
+            "default": "pLI_values.txt"
+        },
+        "dbNSFP": {
+            "type": "string",
+            "default": "dbNSFP4.9a_grch38.gz"
+        },
+        "maxEntScan": {
+            "type": "string",
+            "default": "maxEntScan"
+        },
+        "cADD_INDELS": {
+            "type": "string",
+            "default": "CADD_v1.7_hg38_gnomad.genomes.r4.0.indel.tsv.gz"
+        },
+        "cADD_INDELS_tbi": {
+            "type": "string",
+            "default": "CADD_v1.7_hg38_gnomad.genomes.r4.0.indel.tsv.gz.tbi"
+        },
+        "cADD_SNVS": {
+            "type": "string",
+            "default": "CADD_v1.7_hg38_whole_genome_SNVs.tsv.gz"
+        },
+        "cADD_SNVS_tbi": {
+            "type": "string",
+            "default": "CADD_v1.7_hg38_whole_genome_SNVs.tsv.gz.tbi"
+        },
+        "vep_annotation_dir": {
+            "type": "string"
+        },
+        "vep_annotation_gene_dir": {
+            "type": "string"
+        },
+        "dbNSFP_tbi": {
+            "type": "string",
+            "default": "dbNSFP4.9a_grch38.gz.tbi"
+        },
+        "kaviar": {
+            "type": "string",
+            "default": "Kaviar-160204-Public-hg38.vcf.gz"
+        },
+        "kaviar_tbi": {
+            "type": "string",
+            "default": "Kaviar-160204-Public-hg38.vcf.gz.tbi"
+        },
+        "mAF_FJD_COHORT": {
+            "type": "string",
+            "default": "MAFdb_AN20_2024_06_26.vcf.gz"
+        },
+        "mAF_FJD_COHORT_tbi": {
+            "type": "string",
+            "default": "MAFdb_AN20_2024_06_26.vcf.gz.tbi"
+        },
+        "cCRS_DB": {
+            "type": "string",
+            "default": "ccrs.all.v2.20180420.hg38.bed.gz"
+        },
+        "cCRS_DB_tbi": {
+            "type": "string",
+            "default": "ccrs.all.v2.20180420.hg38.bed.gz.tbi"
+        },
+        "cLINVAR": {
+            "type": "string",
+            "default": "clinvar.GRCh38.vcf.gz"
+        },
+        "cLINVAR_tbi": {
+            "type": "string",
+            "default": "/clinvar.GRCh38.vcf.gz.tbi"
+        },
+        "dENOVO_DB": {
+            "type": "string",
+            "default": "denovo-db.non-ssc-samples.variants.hg38.chr.vcf.gz"
+        },
+        "dENOVO_DB_tbi": {
+            "type": "string",
+            "default": "denovo-db.non-ssc-samples.variants.hg38.chr.vcf.gz.tbi"
+        },
+        "gNOMADe_cov": {
+            "type": "string",
+            "default": "gnomad.exomes.v4.0.coverage.hg38.positions.vcf.gz"
+        },
+        "gNOMADe_cov_tbi": {
+            "type": "string",
+            "default": "gnomad.exomes.v4.0.coverage.hg38.positions.vcf.gz.tbi"
+        },
+        "gNOMADe": {
+            "type": "string",
+            "default": "gnomad.exomes.v4.1.sites.okannotfilt.allchr.vcf.gz"
+        },
+        "gNOMADe_tbi": {
+            "type": "string",
+            "default": "gnomad.exomes.v4.1.sites.okannotfilt.allchr.vcf.gz.tbi"
+        },
+        "gNOMADg_cov": {
+            "type": "string",
+            "default": "gnomad.genomes.v3.0.1.coverage.hg38.positions.vcf.gz"
+        },
+        "gNOMADg_cov_tbi": {
+            "type": "string",
+            "default": "gnomad.genomes.v3.0.1.coverage.hg38.positions.vcf.gz.tbi"
+        },
+        "gNOMADg": {
+            "type": "string",
+            "default": "gnomad.genomes.v4.1.sites.okannotfilt.allchr.vcf.gz"
+        },
+        "gNOMADg_tbi": {
+            "type": "string",
+            "default": "gnomad.genomes.v4.1.sites.okannotfilt.allchr.vcf.gz.tbi"
+        },
+        "mutScore": {
+            "type": "string",
+            "default": "mutscore-v1.0-hg38.vcf.gz"
+        },
+        "mutScore_tbi": {
+            "type": "string",
+            "default": "mutscore-v1.0-hg38.vcf.gz.tbi"
+        },
+        "spliceAI_SNV": {
+            "type": "string",
+            "default": "spliceai_scores.raw.snv.hg38.vcf.gz"
+        },
+        "spliceAI_SNV_tbi": {
+            "type": "string",
+            "default": "spliceai_scores.raw.snv.hg38.vcf.gz.tbi"
+        },
+        "spliceAI_INDEL": {
+            "type": "string",
+            "default": "spliceai_scores.raw.indel.hg38.vcf.gz"
+        },
+        "spliceAI_INDEL_tbi": {
+            "type": "string",
+            "default": "spliceai_scores.raw.indel.hg38.vcf.gz.tbi"
+        },
+        "cSVS": {
+            "type": "string",
+            "default": "all.hg38.vcf.gz"
+        },
+        "cSVS_tbi": {
+            "type": "string",
+            "default": "all.hg38.vcf.gz.tbi"
+        },
+        "REVEL": {
+            "type": "string",
+            "default": "revel_hg38_20210503.vcf.gz"
+        },
+        "REVEL_tbi": {
+            "type": "string",
+            "default": "revel_hg38_20210503.vcf.gz.tbi"
+        },
+        "CSVS_dir": {
+            "type": "string",
+            "default": "CSVS_vcf_hg38"
+        },
+        "n_vcf_variants_split": {
+            "type": "integer",
+            "default": 1200000
+        },
+        "dbNSFP_gene": {
+            "type": "string",
+            "default": "dbNSFP4.9_gene.complete.pvm.txt"
+        },
+        "omim": {
+            "type": "string",
+            "default": "omim_genemap2.txt"
+        },
+        "regiondict": {
+            "type": "string",
+            "default": "dict_region.csv"
+        },
+        "domino": {
+            "type": "string",
+            "default": "domino_v1_20190219.txt"
+        },
+        "tissue_expression": {
+            "type": "string",
+            "default": "rna_tissue_consensus_pvm.tsv"
+        },
+        "maf": {
+            "type": "number",
+            "default": 0.1
+        },
+        "glowgenes": {
+            "type": "string",
+            "default": "[]"
+        },
+        "genefilter": {
+            "type": "string",
+            "default": "[]"
+        }
+    }
 }

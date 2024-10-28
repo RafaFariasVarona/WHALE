@@ -8,7 +8,6 @@ include { INS_MERGE                } from '../../../modules/local/ins_merge/main
 include { BND_MERGE                } from '../../../modules/local/bnd_merge/main'
 include { DUP_MERGE                } from '../../../modules/local/dup_merge/main'
 include { POSTMERGE                } from '../../../modules/local/postmerge/main'
-include { ADD_SAMPLES_DB           } from '../../../modules/local/add_samples_db/main'
 
 workflow MERGE_SV_CALLING {
 
@@ -65,16 +64,7 @@ workflow MERGE_SV_CALLING {
         merged_files
     )
 
-    if (params.sv_database == true) {
-        
-        multiinter = params.sv_multiinter ? Channel.fromPath(params.sv_multiinter).collect() : Channel.empty()
-
-        ADD_SAMPLES_DB (
-            POSTMERGE.out.merged_gt,
-            multiinter
-        )
-    }
-
     emit:
-    merged_final = params.sv_database == true ? ADD_SAMPLES_DB.out.samples_info : POSTMERGE.out.merged_final
+    merged_gt = POSTMERGE.out.merged_gt
+    merged_final = POSTMERGE.out.merged_final
 }
