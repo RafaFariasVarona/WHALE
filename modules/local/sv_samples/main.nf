@@ -12,7 +12,7 @@ process SV_SAMPLES {
     path(multiinter)
 
     output:
-    tuple val(meta), path("*info_final.bed"), emit: samples_info
+    tuple val(meta), path("*info_final.bed"), emit: samples_info_bed
     path "versions.yml"           , emit: versions
 
     when:
