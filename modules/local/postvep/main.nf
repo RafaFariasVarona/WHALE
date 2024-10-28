@@ -2,6 +2,8 @@ process POSTVEP {
     tag "$meta.id"
     label 'process_medium'
 
+    container "${params.singularity_dir}/bioinfotools_2.0.0.sif"
+
     input:
     tuple val(meta), path(vep_tsv), path(roh_automap)
     path dbNSFP_gene
