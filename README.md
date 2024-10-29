@@ -1,7 +1,7 @@
 # WHALE: (W)orkflow for (H)uman-genome (A)nalysis of (L)ong-read (E)xperiments
 
 <p align="center">
-  <img width="500" height="600" src="docs/images/PENUP_20241005_013818.png">
+  <img width="494" height="521" src="docs/images/PENUP_20241005_013818.png">
 </p>
 
 ## Introduction
