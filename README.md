@@ -7,7 +7,7 @@
 
 ## Introduction
 
-**nf-core/WHALE** is a bioinformatics pipeline for long-read DNA sequencing analysis. It takes a samplesheet as input and performs quality control, alignment, variant calling and annotation.
+**WHALE** is a bioinformatics pipeline based on Nextflow and nf-core for long-read DNA sequencing analysis. It takes a samplesheet as input and performs quality control, alignment, variant calling and annotation.
 
 <!-- TODO nf-core: Include a figure that guides the user through the major workflow steps. Many nf-core
      workflows use the "tube map" design for that. See https://nf-co.re/docs/contributing/design_guidelines#examples for examples.   -->
@@ -71,12 +71,19 @@ nextflow run WHALE/ \
    --outdir <OUTDIR>
    --step variant_calling
 ```
-SV analysis
 
+SV calling in the CCC:
+
+```bash
+nextflow run WHALE/ \
+   -profile sv_calling,uam,singularity,batch \
+   --input samplesheet.csv \
+   --outdir <OUTDIR>
+```
 
 ## Pipeline output
 
-Directories:
+**WHALE** will create the following subdirectories in the output directory:
 - alignment
 - snv_calling
   - snv_merge
