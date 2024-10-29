@@ -1,9 +1,6 @@
-<h1>
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/images/nf-core-variantpipeline_logo_dark.png">
-    <img alt="nf-core/variantpipeline" src="docs/images/nf-core-variantpipeline_logo_light.png">
-  </picture>
-</h1>
+<p align="center">
+  <img width="500" height="600" src="docs/images/PENUP_20241005_013818.png">
+</p>
 
 ## Introduction
 
