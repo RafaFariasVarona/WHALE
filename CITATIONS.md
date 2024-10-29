@@ -54,6 +54,14 @@
 
   > Geoffroy, V., Herenger, Y., Kress, A., Stoetzel, C., Piton, A., Dollfus, H., & Muller, J. (2018). AnnotSV: an integrated tool for structural variations annotation. Bioinformatics, 34(20), 3572-3574. https://doi.org/10.1093/bioinformatics/bty304
 
+- [BCFtools](https://github.com/samtools/bcftools)
+
+  > Danecek, P., Bonfield, J. K., Liddle, J., Marshall, J., Ohan, V., Pollard, M. O., ... & Li, H. (2021). Twelve years of SAMtools and BCFtools. GigaScience, 10(2), giab008. https://doi.org/10.1093/gigascience/giab008
+
+- [BEDTools](https://github.com/arq5x/bedtools2)
+
+  > Quinlan, A. R., & Hall, I. M. (2010). BEDTools: a flexible suite of utilities for comparing genomic features. Bioinformatics, 26(6), 841-842. https://doi.org/10.1093/bioinformatics/btq033
+
 ## Software packaging/containerisation tools
 
 - [Anaconda](https://anaconda.com)
