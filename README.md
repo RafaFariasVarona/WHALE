@@ -67,7 +67,7 @@ SNV and SV analysis starting with variant calling in the server:
 nextflow run WHALE \
    -profile snv_analysis,sv_analysis,tblabserver,singularity \
    --input samplesheet.csv \
-   --outdir <OUTDIR>
+   --outdir <OUTDIR> \
    --step variant_calling
 ```
 
