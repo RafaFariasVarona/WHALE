@@ -41,15 +41,15 @@ There are two types of full analysis:
 - SNV analysis: -profile snv_analysis
 - SV analysis: -profile sv_analysis
     
-  Each full analysis can be started with one of these data types:
-  - fastq (--step mapping) (default)
-  - bam (--step variant_calling)
+  Each full analysis can start with:
+  - Alignment: --step mapping (input data type: fastq) (default)
+  - Variant calling: --step variant_calling (input data type: bam and bai)
     
 A specific step of the analysis can be executed:
-- SNV calling: -profile snv_calling
-- SV calling: -profile sv_calling
-- SNV annotation: -profile snv_annotation
-- SV annotation: -profile sv_annotation
+- SNV calling (and merge): -profile snv_calling (input data type: bam and bai)
+- SV calling (and merge): -profile sv_calling (input data type: bam and bai)
+- SNV annotation: -profile snv_annotation (input data type: vcf)
+- SV annotation: -profile sv_annotation (input data type: bed)
 
 Profiles to use in the CCC (UAM):
 - -profile uam,singularity,batch
@@ -61,11 +61,11 @@ Profiles to use in the server:
 
 ## Examples
 
-SNV analysis starting with bam files in the server:
+SNV and SV analysis starting with variant calling in the server:
 
 ```bash
-nextflow run WHALE/ \
-   -profile snv_analysis,tblabserver,singularity \
+nextflow run WHALE \
+   -profile snv_analysis,sv_analysis,tblabserver,singularity \
    --input samplesheet.csv \
    --outdir <OUTDIR>
    --step variant_calling
@@ -74,7 +74,7 @@ nextflow run WHALE/ \
 SV calling in the CCC:
 
 ```bash
-nextflow run WHALE/ \
+nextflow run WHALE \
    -profile sv_calling,uam,singularity,batch \
    --input samplesheet.csv \
    --outdir <OUTDIR>
