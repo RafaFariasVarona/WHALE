@@ -1,110 +1,101 @@
-<h1>
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/images/nf-core-variantpipeline_logo_dark.png">
-    <img alt="nf-core/variantpipeline" src="docs/images/nf-core-variantpipeline_logo_light.png">
-  </picture>
-</h1>
+# WHALE: (W)orkflow for (H)uman-genome (A)nalysis of (L)ong-read (E)xperiments
 
-[![GitHub Actions CI Status](https://github.com/nf-core/variantpipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/nf-core/variantpipeline/actions/workflows/ci.yml)
-[![GitHub Actions Linting Status](https://github.com/nf-core/variantpipeline/actions/workflows/linting.yml/badge.svg)](https://github.com/nf-core/variantpipeline/actions/workflows/linting.yml)[![AWS CI](https://img.shields.io/badge/CI%20tests-full%20size-FF9900?labelColor=000000&logo=Amazon%20AWS)](https://nf-co.re/variantpipeline/results)[![Cite with Zenodo](http://img.shields.io/badge/DOI-10.5281/zenodo.XXXXXXX-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.XXXXXXX)
-[![nf-test](https://img.shields.io/badge/unit_tests-nf--test-337ab7.svg)](https://www.nf-test.com)
-
-[![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A523.04.0-23aa62.svg)](https://www.nextflow.io/)
-[![run with conda](http://img.shields.io/badge/run%20with-conda-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/en/latest/)
-[![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
-[![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/)
-[![Launch on Seqera Platform](https://img.shields.io/badge/Launch%20%F0%9F%9A%80-Seqera%20Platform-%234256e7)](https://cloud.seqera.io/launch?pipeline=https://github.com/nf-core/variantpipeline)
-
-[![Get help on Slack](http://img.shields.io/badge/slack-nf--core%20%23variantpipeline-4A154B?labelColor=000000&logo=slack)](https://nfcore.slack.com/channels/variantpipeline)[![Follow on Twitter](http://img.shields.io/badge/twitter-%40nf__core-1DA1F2?labelColor=000000&logo=twitter)](https://twitter.com/nf_core)[![Follow on Mastodon](https://img.shields.io/badge/mastodon-nf__core-6364ff?labelColor=FFFFFF&logo=mastodon)](https://mstdn.science/@nf_core)[![Watch on YouTube](http://img.shields.io/badge/youtube-nf--core-FF0000?labelColor=000000&logo=youtube)](https://www.youtube.com/c/nf-core)
+<p align="center">
+  <img width="494" height="521" src="docs/images/PENUP_20241005_013818.png">
+</p>
 
 ## Introduction
 
-**nf-core/variantpipeline** is a bioinformatics pipeline that ...
+**WHALE** is a bioinformatics pipeline based on Nextflow and nf-core for long-read DNA sequencing analysis. It takes a samplesheet as input and performs quality control, alignment, variant calling and annotation.
 
-<!-- TODO nf-core:
-   Complete this sentence with a 2-3 sentence summary of what types of data the pipeline ingests, a brief overview of the
-   major pipeline sections and the types of output it produces. You're giving an overview to someone new
-   to nf-core here, in 15-20 seconds. For an example, see https://github.com/nf-core/rnaseq/blob/master/README.md#introduction
--->
+<p align="center">
+  <img src="docs/images/esquema_general.png">
+</p>
 
-<!-- TODO nf-core: Include a figure that guides the user through the major workflow steps. Many nf-core
-     workflows use the "tube map" design for that. See https://nf-co.re/docs/contributing/design_guidelines#examples for examples.   -->
-<!-- TODO nf-core: Fill in short bullet-pointed list of the default steps in the pipeline -->
+## Pipeline summary
 
 1. Read QC ([`FastQC`](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/))
 2. Present QC for raw reads ([`MultiQC`](http://multiqc.info/))
+3. Alignment ([`Minimap2`](https://github.com/lh3/minimap2))
+4. Variant calling
+    - Single Nucleotide Variant (SNV) calling ([`DeepVariant`](https://github.com/google/deepvariant), [`Clair3`](https://github.com/HKU-BAL/Clair3), [`NanoCaller`](https://github.com/WGLab/NanoCaller))
+    - Structural Variant (SV) calling ([`Sniffles2`](https://github.com/fritzsedlazeck/Sniffles), [`CuteSV`](https://github.com/tjiangHIT/cuteSV), [`SVIM`](https://github.com/eldariont/svim))
+5. Merge variant calling
+6. Annotation
+    - SNV annotation ([`VEP`](https://github.com/Ensembl/ensembl-vep))
+    - SV annotation ([`AnnotSV`](https://github.com/lgmgeo/AnnotSV))
 
 ## Usage
 
-> [!NOTE]
-> If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/usage/installation) on how to set-up Nextflow. Make sure to [test your setup](https://nf-co.re/docs/usage/introduction#how-to-run-a-pipeline) with `-profile test` before running the workflow on actual data.
-
-<!-- TODO nf-core: Describe the minimum required steps to execute the pipeline, e.g. how to prepare samplesheets.
-     Explain what rows and columns represent. For instance (please edit as appropriate):
-
-First, prepare a samplesheet with your input data that looks as follows:
+First, prepare a samplesheet with your input data. Depending on which step of the analysis you want to run, the input data type can be: fastq, bam (and bai), vcf or bed. The samplesheet should look as follows:
 
 `samplesheet.csv`:
 
 ```csv
-sample,fastq_1,fastq_2
-CONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz
+sample,fastq
+A123,/path/to/your/input/file/A123.fastq.gz
+B456,/path/to/your/input/file/B456.fastq.gz
 ```
 
-Each row represents a fastq file (single-end) or a pair of fastq files (paired end).
+There are two types of full analysis:
+- SNV analysis: -profile snv_analysis
+- SV analysis: -profile sv_analysis
+    
+  Each full analysis can start with:
+  - Alignment: --step mapping (input data type: fastq) (default)
+  - Variant calling: --step variant_calling (input data type: bam and bai)
+    
+A specific step of the analysis can be executed:
+- SNV calling (and merge): -profile snv_calling (input data type: bam and bai)
+- SV calling (and merge): -profile sv_calling (input data type: bam and bai)
+- SNV annotation: -profile snv_annotation (input data type: vcf)
+- SV annotation: -profile sv_annotation (input data type: bed)
 
--->
+Profiles to use in the CCC (UAM):
+- -profile uam,singularity,batch
+- -profile uam_allcontigs,singularity,batch
 
-Now, you can run the pipeline using:
+Profiles to use in the server:
+- -profile tblabserver,singularity
+- -profile tblabserver_allcontigs,singularity
 
-<!-- TODO nf-core: update the following command to include all required parameters for a minimal example -->
+## Examples
+
+SNV and SV analysis starting with variant calling in the server:
 
 ```bash
-nextflow run nf-core/variantpipeline \
-   -profile <docker/singularity/.../institute> \
+nextflow run WHALE \
+   -profile snv_analysis,sv_analysis,tblabserver,singularity \
+   --input samplesheet.csv \
+   --outdir <OUTDIR> \
+   --step variant_calling
+```
+
+SV calling in the CCC:
+
+```bash
+nextflow run WHALE \
+   -profile sv_calling,uam,singularity,batch \
    --input samplesheet.csv \
    --outdir <OUTDIR>
 ```
 
-> [!WARNING]
-> Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_;
-> see [docs](https://nf-co.re/usage/configuration#custom-configuration-files).
-
-For more details and further functionality, please refer to the [usage documentation](https://nf-co.re/variantpipeline/usage) and the [parameter documentation](https://nf-co.re/variantpipeline/parameters).
-
 ## Pipeline output
 
-To see the results of an example test run with a full size dataset refer to the [results](https://nf-co.re/variantpipeline/results) tab on the nf-core website pipeline page.
-For more details about the output files and reports, please refer to the
-[output documentation](https://nf-co.re/variantpipeline/output).
-
-## Credits
-
-nf-core/variantpipeline was originally written by rafa.
-
-We thank the following people for their extensive assistance in the development of this pipeline:
-
-<!-- TODO nf-core: If applicable, make list of people who have also contributed -->
-
-## Contributions and Support
-
-If you would like to contribute to this pipeline, please see the [contributing guidelines](.github/CONTRIBUTING.md).
-
-For further information or help, don't hesitate to get in touch on the [Slack `#variantpipeline` channel](https://nfcore.slack.com/channels/variantpipeline) (you can join with [this invite](https://nf-co.re/join/slack)).
+**WHALE** will create the following subdirectories in the output directory:
+- alignment
+- snv_calling
+  - snv_merge
+- snv_annotation
+- sv_calling
+  - sv_merge
+- sv_annotation
+  - overlapping_sv_samples
+- multiqc
+- pipeline_info
 
 ## Citations
 
-<!-- TODO nf-core: Add citation for pipeline after first release. Uncomment lines below and update Zenodo doi and badge at the top of this file. -->
-<!-- If you use nf-core/variantpipeline for your analysis, please cite it using the following doi: [10.5281/zenodo.XXXXXX](https://doi.org/10.5281/zenodo.XXXXXX) -->
-
-<!-- TODO nf-core: Add bibliography of tools and data used in your pipeline -->
-
 An extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](CITATIONS.md) file.
 
-You can cite the `nf-core` publication as follows:
-
-> **The nf-core framework for community-curated bioinformatics pipelines.**
->
-> Philip Ewels, Alexander Peltzer, Sven Fillinger, Harshil Patel, Johannes Alneberg, Andreas Wilm, Maxime Ulysse Garcia, Paolo Di Tommaso & Sven Nahnsen.
->
-> _Nat Biotechnol._ 2020 Feb 13. doi: [10.1038/s41587-020-0439-x](https://dx.doi.org/10.1038/s41587-020-0439-x).
+Illustration by [Yolanda Benítez](https://github.com/yolandabq)

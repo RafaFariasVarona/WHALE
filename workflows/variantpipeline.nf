@@ -61,7 +61,7 @@ workflow VARIANTPIPELINE {
         merged_vcf = samplesheet
     }
     else if (params.step == 'sv_annotation') {
-        merged_bed = samplesheet
+        merged_final_bed = samplesheet
     }
 
     //
@@ -115,16 +115,19 @@ workflow VARIANTPIPELINE {
             SV_CALLING.out.svim_vcf
         )
 
-        merged_bed = MERGE_SV_CALLING.out.merged_final
+        merged_gt_bed = MERGE_SV_CALLING.out.merged_gt
+        merged_final_bed = MERGE_SV_CALLING.out.merged_final
     }
 
     //
     // SUBWORKFLOW: Run SNV Annotation
     //
     
+
     if (params.snv_annotation == true) {
         SNV_ANNOTATION (
-            merged_vcf
+            merged_vcf, 
+            fasta
         )
     }
 
@@ -133,9 +136,16 @@ workflow VARIANTPIPELINE {
     //
     
     if (params.sv_annotation == true) {
-        SV_ANNOTATION (
-            merged_bed
-        )
+        if (params.sv_database == true) {
+            SV_ANNOTATION (
+                merged_gt_bed
+            )
+        }
+        else {
+            SV_ANNOTATION (
+                merged_final_bed
+            )
+        }
     }
 
     //

@@ -9,7 +9,6 @@ include { SOFTWARE_INFO          } from '../../../modules/local/software_info/ma
 include { SAMPLE_INFO            } from '../../../modules/local/sample_info/main'
 include { FORMAT_VCF             } from '../../../modules/local/format_vcf/main'
 include { HEADER_VARIANTS_VCF    } from '../../../modules/local/header_variants_vcf/main'
-include { TABIX_BGZIP            } from '../../../modules/nf-core/tabix/bgzip/main'
 
 workflow MERGE_SNV_CALLING {
 
@@ -72,10 +71,7 @@ workflow MERGE_SNV_CALLING {
 
     HEADER_VARIANTS_VCF (
         header_variants_vcf_input)
-    
-    TABIX_BGZIP (
-        HEADER_VARIANTS_VCF.out.final_vcf)
 
     emit:
-    final_vcf = TABIX_BGZIP.out.output
+    final_vcf = HEADER_VARIANTS_VCF.out.final_vcf
 }

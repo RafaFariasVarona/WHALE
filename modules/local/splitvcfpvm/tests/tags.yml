@@ -1,0 +1,2 @@
+splitvcfpvm:
+  - "modules/nf-core/splitvcfpvm/**"

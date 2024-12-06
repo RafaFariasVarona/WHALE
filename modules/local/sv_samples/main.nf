@@ -1,4 +1,4 @@
-process ADD_SAMPLES_DB {
+process SV_SAMPLES {
     tag "$meta.id"
     label 'process_single'
 
@@ -12,7 +12,7 @@ process ADD_SAMPLES_DB {
     path(multiinter)
 
     output:
-    tuple val(meta), path("*info_final.bed"), emit: samples_info
+    tuple val(meta), path("*info_final.bed"), emit: samples_info_bed
     path "versions.yml"           , emit: versions
 
     when:

@@ -32,7 +32,7 @@ process BCFTOOLS_NORM {
     """
     bcftools norm \\
         --fasta-ref ${fasta} \\
-        --output ${vcf.getBaseName(2)}_biallelic.${extension} \\
+        --output ${prefix}.${extension} \\
         $args \\
         --threads $task.cpus \\
         ${vcf}
