@@ -6,7 +6,7 @@
 
 ## Introduction
 
-**WHALE** is a bioinformatics pipeline based on Nextflow and nf-core for long-read DNA sequencing analysis. It takes a samplesheet as input and performs quality control, alignment, variant calling and annotation.
+**WHALE** is a bioinformatics pipeline based on Nextflow and nf-core for long-read DNA sequencing analysis. It is optimized for the study and diagnosis of rare diseases. It takes a samplesheet as input and performs quality control, alignment, variant calling (and its integration) and annotation.
 
 <p align="center">
   <img src="docs/images/esquema_general.png">
